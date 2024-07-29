@@ -14,8 +14,10 @@ pip install requirements.txt
 ```
 运行ScrapyAPK
 ```
-scrapy zhuzhou -o result.csv
+scrapy crawl zhuzhou -o result.csv
 ```
+![image](https://github.com/user-attachments/assets/d6fbab30-f813-4da6-b3a5-325e628dd08a)
+
 然后在pycharm中导出为excel，不然还要额外处理乱码：
 ![Alt text](image.png)
 
