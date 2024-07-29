@@ -5,17 +5,14 @@ from ScrapyAPK.items import ScrapyapkItem
 class ZhushouSpider(scrapy.Spider):
     name = "zhushou"
     allowed_domains = ["apkpure.com"]
-    
-    # 这里可以设置爬取的app类别
-    # start_urls = ["https://apkpure.com/cn/tools"]
 
     def start_requests(self):
+        # 这里可以设置爬取的app类别
         base_url = "https://apkpure.com/cn/tools?page={}"
-        total_pages = 3  # 假设要获取前3页的数据
+        total_pages = 3  # 获取前3页的数据
         for page in range(1, total_pages + 1):
             url = base_url.format(page)
             yield scrapy.Request(url=url, callback=self.parse)
-    # start_urls = ["https://apkpure.com/cn/tools?page=1"]
 
     def parse(self, response):
 
@@ -40,14 +37,12 @@ class ZhushouSpider(scrapy.Spider):
             href = download_element.xpath('./@href').get()
             if href:
                 # 构造请求，继续请求下载链接
-                # yield scrapy.Request(url=href, callback=self.parse_download_page)
                 yield scrapy.Request(url=href, callback=self.parse_download_page, meta={'item': item})
 
         yield item
 
 
     def parse_download_page(self, response):
-
 
         # 2024-03-05
         # download_link = response.xpath(
@@ -60,9 +55,7 @@ class ZhushouSpider(scrapy.Spider):
 
         if download_link:
             print("下载链接：" + download_link)
-            # item = ScrapyapkItem()
-            # item['url'] = download_link
-            # yield item
+
             item = response.meta['item']
             item['url'] = download_link
             yield item
