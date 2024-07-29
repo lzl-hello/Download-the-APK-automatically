@@ -5,7 +5,8 @@ from ScrapyAPK.items import ScrapyapkItem
 class ZhushouSpider(scrapy.Spider):
     name = "zhushou"
     allowed_domains = ["apkpure.com"]
-
+    
+    # 这里可以设置爬取的app类别
     # start_urls = ["https://apkpure.com/cn/tools"]
 
     def start_requests(self):
@@ -48,9 +49,15 @@ class ZhushouSpider(scrapy.Spider):
     def parse_download_page(self, response):
 
 
-        # download_link = response.xpath('/html/body/div[3]/main/div[4]/a[1]/@href').get()
+        # 2024-03-05
+        # download_link = response.xpath(
+        #     '//a[contains(@class, "btn") and contains(@class, "download-start-btn")]/@href').get()
+
+        # 2024-07-29 update 后续如果发现找不到下载链接了，自己去网页里找一下href，然后修改这里的xpath（他们网页代码会变）
         download_link = response.xpath(
-            '//a[contains(@class, "btn") and contains(@class, "download-start-btn")]/@href').get()
+            '//div[contains(@class, "download-fallback")]/a/@href'
+        ).get()
+
         if download_link:
             print("下载链接：" + download_link)
             # item = ScrapyapkItem()
@@ -61,7 +68,4 @@ class ZhushouSpider(scrapy.Spider):
             yield item
         else:
             print("未获取到下载链接")
-
-
-
 
